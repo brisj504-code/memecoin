@@ -1,0 +1,29 @@
+# Use the official Python 3.10 slim image as the base.
+FROM python:3.10-slim
+
+# Set the working directory inside the container to /app
+WORKDIR /app
+
+# Upgrade pip to ensure we have the latest version
+RUN pip install --no-cache-dir --upgrade pip
+
+# Install the necessary libraries
+RUN pip install --no-cache-dir \
+    pandas \
+    tensorflow \
+    numpy \
+    # For accessing crypto market data (e.g., CoinGecko is free and popular)
+    pycoingecko \
+    # For accessing Reddit data
+    praw \
+    # For accessing X (Twitter) data - requires developer account
+    tweepy \
+    # A user-friendly library for sentiment analysis
+    textblob
+
+# Download the necessary corpora for TextBlob to work
+RUN python -m textblob.download_corpora
+
+# When the container is run, it will start a bash shell.
+CMD ["bash"]
+
